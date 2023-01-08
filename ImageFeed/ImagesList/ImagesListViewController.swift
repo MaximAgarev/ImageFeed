@@ -37,7 +37,7 @@ extension ImagesListViewController: UITableViewDataSource {
     
 }
 
-class ImagesListViewController: UIViewController {
+final class ImagesListViewController: UIViewController {
 
     private let photosName: [String] = Array(0..<20).map{"\($0)"}
     
@@ -47,6 +47,7 @@ class ImagesListViewController: UIViewController {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
         formatter.timeStyle = .none
+        formatter.locale = Locale(identifier: "ru_RU")
         return formatter
     }()
     
@@ -63,7 +64,11 @@ class ImagesListViewController: UIViewController {
         }
         
         cell.cellImage.image = image
-        cell.dateLabel.text = dateFormatter.string(from: .now)
+        if #available(iOS 15, *) {
+            cell.dateLabel.text = dateFormatter.string(from: .now)
+        } else {
+            cell.dateLabel.text = dateFormatter.string(from: Date())
+        }
         let likeButtonStatus = indexPath.row%2 == 1 ? "Active" : "Inactive"
         cell.likeButton.setImage(UIImage(named: likeButtonStatus), for: .normal)
         
