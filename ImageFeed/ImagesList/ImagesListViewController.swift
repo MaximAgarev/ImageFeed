@@ -1,8 +1,57 @@
 import UIKit
 
+final class ImagesListViewController: UIViewController {
+
+    private let photosName: [String] = Array(0..<20).map{"\($0)"}
+    private let showSingleImageSegueIdentifier = "ShowSingleImage"
+    
+    @IBOutlet private var tableView: UITableView!
+    
+    private lazy var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        formatter.timeStyle = .none
+        formatter.locale = Locale(identifier: "ru_RU")
+        return formatter
+    }()
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == showSingleImageSegueIdentifier {
+            let viewController = segue.destination as! SingleImageViewController
+            guard let indexPath = sender as? IndexPath else { return }
+            let image = UIImage(named: photosName[indexPath.row])
+            viewController.image = image
+        } else {
+            super.prepare(for: segue, sender: sender)
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+    }
+    
+    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
+                
+        guard let image = UIImage(named: photosName[indexPath.row]) else {
+            return
+        }
+        
+        cell.cellImage.image = image
+        if #available(iOS 15, *) {
+            cell.dateLabel.text = dateFormatter.string(from: .now)
+        } else {
+            cell.dateLabel.text = dateFormatter.string(from: Date())
+        }
+        let likeButtonStatus = indexPath.row%2 == 1 ? "Active" : "Inactive"
+        cell.likeButton.setImage(UIImage(named: likeButtonStatus), for: .normal)
+    }
+}
+
 extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -33,47 +82,4 @@ extension ImagesListViewController: UITableViewDataSource {
         configCell(for: imagesListCell, with: indexPath)
         return imagesListCell
     }
-    
-    
 }
-
-final class ImagesListViewController: UIViewController {
-
-    private let photosName: [String] = Array(0..<20).map{"\($0)"}
-    
-    @IBOutlet private var tableView: UITableView!
-    
-    private lazy var dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
-        formatter.locale = Locale(identifier: "ru_RU")
-        return formatter
-    }()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-    }
-    
-    func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-                
-        guard let image = UIImage(named: photosName[indexPath.row]) else {
-            return
-        }
-        
-        cell.cellImage.image = image
-        if #available(iOS 15, *) {
-            cell.dateLabel.text = dateFormatter.string(from: .now)
-        } else {
-            cell.dateLabel.text = dateFormatter.string(from: Date())
-        }
-        let likeButtonStatus = indexPath.row%2 == 1 ? "Active" : "Inactive"
-        cell.likeButton.setImage(UIImage(named: likeButtonStatus), for: .normal)
-        
-    }
-
-
-}
-
