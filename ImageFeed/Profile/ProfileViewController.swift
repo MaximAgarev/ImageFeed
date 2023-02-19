@@ -3,7 +3,7 @@ import UIKit
 final class ProfileViewController: UIViewController {
     
     private lazy var userImage: UIImageView = {
-        let placeholder = UIImage(named: "UserImagePlaceholder")
+        let placeholder = UIImage(named: "userImagePlaceholder")
         let userImage = UIImageView(image: placeholder)
         return userImage
     }()
@@ -30,7 +30,7 @@ final class ProfileViewController: UIViewController {
     }()
     private lazy var logoutButton: UIButton = {
         let logoutButton = UIButton.systemButton(
-            with: UIImage(named: "ExitButtonImage")!,
+            with: UIImage(named: "exitButtonImage")!,
             target: self,
             action: #selector(didTapButton))
         logoutButton.tintColor = UIColor(named: "YP Red (iOS)")
