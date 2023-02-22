@@ -4,15 +4,20 @@ final class SplashViewController: UIViewController {
     private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
 
     private let oauth2TokenStorage = OAuth2TokenStorage()
+    private var firstLaunch: Bool = true
     private let oauth2Service = OAuth2Service.shared
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-        if oauth2Service.authToken != nil {
-            switchToTabBarController()
-        } else {
-            performSegue(withIdentifier: ShowAuthenticationScreenSegueIdentifier, sender: nil)
+        
+        if firstLaunch {
+            firstLaunch = false
+                        
+            if oauth2Service.authToken != nil {
+                switchToTabBarController()
+            } else {
+                performSegue(withIdentifier: ShowAuthenticationScreenSegueIdentifier, sender: nil)
+            }
         }
     }
 

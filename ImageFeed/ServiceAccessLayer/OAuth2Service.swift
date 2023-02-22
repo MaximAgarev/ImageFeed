@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 enum NetworkError: Error {
     case httpStatusCode(Int)
@@ -39,9 +39,9 @@ final class OAuth2Service {
     private func makeRequest(code: String) -> URLRequest {
         makeRequest(
             path: "/oauth/token"
-            + "?client_id=\(AccessKey)"
-            + "&&client_secret=\(SecretKey)"
-            + "&&redirect_uri=\(RedirectURI)"
+            + "?client_id=\(accessKey)"
+            + "&&client_secret=\(secretKey)"
+            + "&&redirect_uri=\(redirectURI)"
             + "&&code=\(code)"
             + "&&grant_type=authorization_code",
             httpMethod: "POST",
@@ -87,7 +87,6 @@ extension OAuth2Service {
                 fulfillCompletionOnTheMainThread(.failure(NetworkError.urlSessionError))
             }
         })
-        task.resume()
         return task
     }
 
@@ -108,7 +107,7 @@ extension OAuth2Service {
     private func makeRequest(
         path: String,
         httpMethod: String,
-        baseURL: URL = DefaultBaseURL
+        baseURL: URL = defaultBaseURL
     ) -> URLRequest {
         var request = URLRequest(url: URL(string: path, relativeTo: baseURL)!)
         request.httpMethod = httpMethod
