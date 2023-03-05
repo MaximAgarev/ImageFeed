@@ -21,6 +21,9 @@
 		D024A532299FC4F0001FDFDB /* OAuth2Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = D024A531299FC4F0001FDFDB /* OAuth2Service.swift */; };
 		D024A53429A207EB001FDFDB /* OAuth2TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D024A53329A207EB001FDFDB /* OAuth2TokenStorage.swift */; };
 		D024A53629A21DB4001FDFDB /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D024A53529A21DB4001FDFDB /* SplashViewController.swift */; };
+		D032EC6D29B35F3600847BC7 /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = D032EC6C29B35F3600847BC7 /* UIBlockingProgressHUD.swift */; };
+		D032EC6F29B364FD00847BC7 /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D032EC6E29B364FD00847BC7 /* ProfileService.swift */; };
+		D032EC7129B3AB2E00847BC7 /* ProfileImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D032EC7029B3AB2E00847BC7 /* ProfileImageService.swift */; };
 		D03407EF29683915005E6ABE /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03407EE29683915005E6ABE /* ImagesListCell.swift */; };
 		D072746529A7B5C20088C3C0 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = D072746429A7B5C20088C3C0 /* ProgressHUD */; };
 /* End PBXBuildFile section */
@@ -42,6 +45,9 @@
 		D024A531299FC4F0001FDFDB /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
 		D024A53329A207EB001FDFDB /* OAuth2TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2TokenStorage.swift; sourceTree = "<group>"; };
 		D024A53529A21DB4001FDFDB /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		D032EC6C29B35F3600847BC7 /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
+		D032EC6E29B364FD00847BC7 /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
+		D032EC7029B3AB2E00847BC7 /* ProfileImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageService.swift; sourceTree = "<group>"; };
 		D03407EE29683915005E6ABE /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -61,6 +67,8 @@
 			isa = PBXGroup;
 			children = (
 				D0082D27297C105E005A5B7A /* ProfileViewController.swift */,
+				D032EC6E29B364FD00847BC7 /* ProfileService.swift */,
+				D032EC7029B3AB2E00847BC7 /* ProfileImageService.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -106,6 +114,7 @@
 			children = (
 				D024A52C299F929B001FDFDB /* AuthViewController.swift */,
 				D024A52E299FA8C7001FDFDB /* WebViewViewController.swift */,
+				D032EC6C29B35F3600847BC7 /* UIBlockingProgressHUD.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -227,12 +236,15 @@
 				D024A53629A21DB4001FDFDB /* SplashViewController.swift in Sources */,
 				D0193DDC2958A5C1004F4850 /* AppDelegate.swift in Sources */,
 				D024A53429A207EB001FDFDB /* OAuth2TokenStorage.swift in Sources */,
+				D032EC6D29B35F3600847BC7 /* UIBlockingProgressHUD.swift in Sources */,
 				D024A52D299F929B001FDFDB /* AuthViewController.swift in Sources */,
 				D024A52A299F90FF001FDFDB /* Constants.swift in Sources */,
 				D0082D2B297D4A5C005A5B7A /* SingleImageViewController.swift in Sources */,
 				D024A52F299FA8C7001FDFDB /* WebViewViewController.swift in Sources */,
 				D024A532299FC4F0001FDFDB /* OAuth2Service.swift in Sources */,
+				D032EC7129B3AB2E00847BC7 /* ProfileImageService.swift in Sources */,
 				D0193DDE2958A5C1004F4850 /* SceneDelegate.swift in Sources */,
+				D032EC6F29B364FD00847BC7 /* ProfileService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

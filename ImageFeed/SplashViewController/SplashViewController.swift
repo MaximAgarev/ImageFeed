@@ -7,7 +7,9 @@ final class SplashViewController: UIViewController {
     private let oauth2TokenStorage = OAuth2TokenStorage()
     private var firstLaunch: Bool = true
     private let oauth2Service = OAuth2Service.shared
-
+    private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -19,6 +21,10 @@ final class SplashViewController: UIViewController {
             } else {
                 performSegue(withIdentifier: ShowAuthenticationScreenSegueIdentifier, sender: nil)
             }
+        }
+        
+        if let token = OAuth2TokenStorage().token {
+            fetchProfile(token: token)
         }
     }
 
@@ -55,7 +61,7 @@ extension SplashViewController {
 
 extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        ProgressHUD.show()
+        UIBlockingProgressHUD.show()
         dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
             self.fetchOAuthToken(code)
@@ -66,12 +72,43 @@ extension SplashViewController: AuthViewControllerDelegate {
         oauth2Service.fetchOAuthToken(code) { [weak self] result in
             guard let self = self else { return }
             switch result {
-            case .success:
-                self.switchToTabBarController()
-                ProgressHUD.dismiss()
+            case .success(let token):
+//                self.switchToTabBarController()
+                self.fetchProfile(token: token)
+                UIBlockingProgressHUD.dismiss()
             case .failure:
-                ProgressHUD.dismiss()
+                UIBlockingProgressHUD.dismiss()
                 // TODO: process error
+            }
+        }
+    }
+    
+    private func fetchProfile(token: String) {
+        profileService.fetchProfile(token) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let profile):
+                self.fetchProfileImageURL(username: profile.username)
+                UIBlockingProgressHUD.dismiss()
+                self.switchToTabBarController()
+            case .failure:
+                UIBlockingProgressHUD.dismiss()
+                break
+            }
+        }
+    }
+    
+    private func fetchProfileImageURL(username: String) {
+        profileImageService.fetchProfileImageURL(username: username) { result in
+            switch result {
+            case .success(let avatarURL):
+                NotificationCenter.default.post(
+                    name: ProfileImageService.didChangeNotification,
+                    object: self,
+                    userInfo: ["URL": avatarURL]
+                )
+            case .failure:
+                break
             }
         }
     }

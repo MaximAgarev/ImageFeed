@@ -2,6 +2,11 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
+    private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
+    private let oauth2Service = OAuth2Service.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
     private lazy var userImage: UIImageView = {
         let placeholder = UIImage(named: "userImagePlaceholder")
         let userImage = UIImageView(image: placeholder)
@@ -45,9 +50,23 @@ final class ProfileViewController: UIViewController {
         addStatusLabel()
         addLogoutButton()
         
+        if let profile = profileService.profile {
+            updateProfileDetails(profile: profile)
+        }
+        
+        profileImageServiceObserver = NotificationCenter.default.addObserver(
+            forName: ProfileImageService.didChangeNotification,
+            object: nil,
+            queue: .main,
+            using: { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
+        )
+        updateAvatar()
     }
     
-    func addUserImage() {
+    private func addUserImage() {
         view.addSubview(userImage)
         userImage.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -58,32 +77,48 @@ final class ProfileViewController: UIViewController {
         ])
     }
     
-    func addUsernameLabel() {
+    private func addUsernameLabel() {
         view.addSubview(usernameLabel)
         usernameLabel.translatesAutoresizingMaskIntoConstraints = false
         usernameLabel.topAnchor.constraint(equalTo: userImage.bottomAnchor, constant: 8).isActive = true
         usernameLabel.leadingAnchor.constraint(equalTo: userImage.leadingAnchor).isActive = true
     }
     
-    func addLoginLabel() {
+    private func addLoginLabel() {
         view.addSubview(loginLabel)
         loginLabel.translatesAutoresizingMaskIntoConstraints = false
         loginLabel.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 8).isActive = true
         loginLabel.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor).isActive = true
     }
     
-    func addStatusLabel() {
+    private func addStatusLabel() {
         view.addSubview(statusLabel)
         statusLabel.translatesAutoresizingMaskIntoConstraints = false
         statusLabel.topAnchor.constraint(equalTo: loginLabel.bottomAnchor, constant: 8).isActive = true
         statusLabel.leadingAnchor.constraint(equalTo: loginLabel.leadingAnchor).isActive = true
     }
     
-    func addLogoutButton() {
+    private func addLogoutButton() {
         view.addSubview(logoutButton)
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
         logoutButton.centerYAnchor.constraint(equalTo: userImage.centerYAnchor).isActive = true
         logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -26).isActive = true
+    }
+    
+    private func updateProfileDetails(profile: Profile) {
+        self.usernameLabel.text = profile.name
+        self.loginLabel.text = profile.loginName
+        self.statusLabel.text = profile.bio
+    }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = profileImageService.avatarURL,
+            let url = URL(string: profileImageURL)
+        else {
+            return
+        }
+        //TODO: Update avatar
     }
     
     @objc
