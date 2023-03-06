@@ -1,4 +1,5 @@
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
@@ -118,7 +119,8 @@ final class ProfileViewController: UIViewController {
         else {
             return
         }
-        //TODO: Update avatar
+        let processor = RoundCornerImageProcessor(cornerRadius: userImage.frame.size.height / 2)
+        userImage.kf.setImage(with: url, placeholder: UIImage(named: "userImagePlaceholder"), options: [.processor(processor)])
     }
     
     @objc

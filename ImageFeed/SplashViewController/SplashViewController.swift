@@ -77,7 +77,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                 UIBlockingProgressHUD.dismiss()
             case .failure:
                 UIBlockingProgressHUD.dismiss()
-                // TODO: process error
+                self.presentNetworkErrorAlert()
             }
         }
     }
@@ -92,7 +92,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                 self.switchToTabBarController()
             case .failure:
                 UIBlockingProgressHUD.dismiss()
-                break
+                self.presentNetworkErrorAlert()
             }
         }
     }
@@ -107,8 +107,22 @@ extension SplashViewController: AuthViewControllerDelegate {
                     userInfo: ["URL": avatarURL]
                 )
             case .failure:
-                break
+                self.presentNetworkErrorAlert()
             }
         }
+    }
+    
+    private func presentNetworkErrorAlert() {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так(",
+            message: "Не удалось войти в систему",
+            preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Ок", style: .default) { _ in
+            self.performSegue(withIdentifier: self.ShowAuthenticationScreenSegueIdentifier, sender: nil)
+        }
+        
+        alert.addAction(action)
+        self.present(alert, animated: true)
     }
 }
