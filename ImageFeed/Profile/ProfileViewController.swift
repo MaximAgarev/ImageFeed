@@ -45,11 +45,13 @@ final class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         addUserImage()
         addUsernameLabel()
         addLoginLabel()
         addStatusLabel()
         addLogoutButton()
+        view.backgroundColor = UIColor(named: "YP Black (iOS)")
         
         if let profile = profileService.profile {
             updateProfileDetails(profile: profile)
@@ -70,6 +72,7 @@ final class ProfileViewController: UIViewController {
     private func addUserImage() {
         view.addSubview(userImage)
         userImage.translatesAutoresizingMaskIntoConstraints = false
+        userImage.layer.cornerRadius = userImage.frame.size.width / 2
         NSLayoutConstraint.activate([
             userImage.heightAnchor.constraint(equalToConstant: 70),
             userImage.widthAnchor.constraint(equalToConstant: 70),
@@ -125,7 +128,7 @@ final class ProfileViewController: UIViewController {
     
     @objc
     func didTapButton() {
-        
+//        OAuth2TokenStorage().token = nil
     }
     
 }

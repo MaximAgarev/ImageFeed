@@ -2,13 +2,23 @@ import UIKit
 import ProgressHUD
 
 final class SplashViewController: UIViewController {
-    private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
-
     private let oauth2TokenStorage = OAuth2TokenStorage()
     private var firstLaunch: Bool = true
     private let oauth2Service = OAuth2Service.shared
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
+    
+    private lazy var logoImage: UIImageView = {
+        let image = UIImage(named: "Vector")
+        let logoImage = UIImageView(image: image)
+        return logoImage
+    }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = UIColor(named: "YP Black (iOS)")
+        addLogoImage()
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -16,15 +26,11 @@ final class SplashViewController: UIViewController {
         if firstLaunch {
             firstLaunch = false
                         
-            if oauth2Service.authToken != nil {
-                switchToTabBarController()
+            if let token = OAuth2TokenStorage().token {
+                fetchProfile(token: token)
             } else {
-                performSegue(withIdentifier: ShowAuthenticationScreenSegueIdentifier, sender: nil)
+                switchToAuthViewController()
             }
-        }
-        
-        if let token = OAuth2TokenStorage().token {
-            fetchProfile(token: token)
         }
     }
 
@@ -36,6 +42,15 @@ final class SplashViewController: UIViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .lightContent
     }
+    
+    private func addLogoImage() {
+        view.addSubview(logoImage)
+        logoImage.translatesAutoresizingMaskIntoConstraints = false
+        logoImage.centerYAnchor.constraint(equalTo: view
+            .safeAreaLayoutGuide.centerYAnchor).isActive = true
+        logoImage.centerXAnchor.constraint(equalTo: view
+            .safeAreaLayoutGuide.centerXAnchor).isActive = true
+    }
 
     private func switchToTabBarController() {
         guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
@@ -43,20 +58,21 @@ final class SplashViewController: UIViewController {
             .instantiateViewController(withIdentifier: "TabBarViewController")
         window.rootViewController = tabBarController
     }
-}
-
-extension SplashViewController {
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == ShowAuthenticationScreenSegueIdentifier {
-            guard
-                let navigationController = segue.destination as? UINavigationController,
-                let viewController = navigationController.viewControllers[0] as? AuthViewController
-            else { fatalError("Failed to prepare for \(ShowAuthenticationScreenSegueIdentifier)") }
-            viewController.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
+    
+    private func switchToAuthViewController() {
+        guard let authViewController = getViewController(with: "AuthViewController") as? AuthViewController
+                else { fatalError()}
+                authViewController.delegate = self
+                authViewController.modalPresentationStyle = .fullScreen
+                present(authViewController, animated: true)
     }
+    
+    private func getViewController(with id: String) -> UIViewController {
+             
+             let storyboard = UIStoryboard(name: "Main", bundle: .main)
+             let viewController = storyboard.instantiateViewController(withIdentifier: id)
+             return viewController
+         }
 }
 
 extension SplashViewController: AuthViewControllerDelegate {
@@ -119,7 +135,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Ок", style: .default) { _ in
-            self.performSegue(withIdentifier: self.ShowAuthenticationScreenSegueIdentifier, sender: nil)
+//            self.performSegue(withIdentifier: self.ShowAuthenticationScreenSegueIdentifier, sender: nil)
         }
         
         alert.addAction(action)
