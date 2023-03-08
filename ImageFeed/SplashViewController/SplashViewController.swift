@@ -16,7 +16,7 @@ final class SplashViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(named: "YP Black (iOS)")
+        view.backgroundColor = .ypBlack
         addLogoImage()
     }
     
@@ -53,7 +53,9 @@ final class SplashViewController: UIViewController {
     }
 
     private func switchToTabBarController() {
-        guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
+        guard let window = UIApplication.shared.windows.first else {
+            assertionFailure("Invalid configuration")
+            return }
         let tabBarController = UIStoryboard(name: "Main", bundle: .main)
             .instantiateViewController(withIdentifier: "TabBarViewController")
         window.rootViewController = tabBarController
@@ -61,7 +63,10 @@ final class SplashViewController: UIViewController {
     
     private func switchToAuthViewController() {
         guard let authViewController = getViewController(with: "AuthViewController") as? AuthViewController
-                else { fatalError()}
+        else {
+            assertionFailure("Invalid configuration")
+            return
+        }
                 authViewController.delegate = self
                 authViewController.modalPresentationStyle = .fullScreen
                 present(authViewController, animated: true)
@@ -135,7 +140,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Ок", style: .default) { _ in
-//            self.performSegue(withIdentifier: self.ShowAuthenticationScreenSegueIdentifier, sender: nil)
+            
         }
         
         alert.addAction(action)

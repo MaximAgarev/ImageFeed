@@ -152,7 +152,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sor-z0-3tt">
                                 <rect key="frame" x="17" y="71" width="24" height="24"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="backwardButton"/>
+                                <state key="normal" image="BackwardButton"/>
                                 <connections>
                                     <action selector="didTapBackButton" destination="tGV-TY-F6b" eventType="touchUpInside" id="B6b-TF-LSZ"/>
                                 </connections>
@@ -160,7 +160,7 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u02-NS-BYq" userLabel="Share Button">
                                 <rect key="frame" x="182" y="795" width="50" height="50"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="shareButton"/>
+                                <state key="normal" image="ShareButton"/>
                                 <connections>
                                     <action selector="didTapShareButton:" destination="tGV-TY-F6b" eventType="touchUpInside" id="H9h-KU-ddg"/>
                                 </connections>
@@ -319,10 +319,10 @@
     </scenes>
     <resources>
         <image name="0" width="200" height="132"/>
+        <image name="BackwardButton" width="24" height="24"/>
         <image name="Inactive" width="30" height="26"/>
-        <image name="backwardButton" width="24" height="24"/>
+        <image name="ShareButton" width="50" height="50"/>
         <image name="nav_back_button" width="24" height="24"/>
-        <image name="shareButton" width="50" height="50"/>
         <image name="tab_editorial_active" width="30" height="30"/>
         <image name="unsplashLogo" width="60" height="60"/>
         <namedColor name="YP Black (iOS)">

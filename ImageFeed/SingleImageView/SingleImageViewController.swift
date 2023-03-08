@@ -39,6 +39,10 @@ final class SingleImageViewController: UIViewController {
         rescaleAndCenterImageInScrollView(image: image)
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
+    }
+    
     @IBAction private func didTapBackButton() {
         dismiss(animated: true, completion: nil)
     }

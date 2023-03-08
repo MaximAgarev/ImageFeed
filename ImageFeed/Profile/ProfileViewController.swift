@@ -9,7 +9,7 @@ final class ProfileViewController: UIViewController {
     private var profileImageServiceObserver: NSObjectProtocol?
     
     private lazy var userImage: UIImageView = {
-        let placeholder = UIImage(named: "userImagePlaceholder")
+        let placeholder = UIImage(named: "UserImagePlaceholder")
         let userImage = UIImageView(image: placeholder)
         return userImage
     }()
@@ -17,31 +17,35 @@ final class ProfileViewController: UIViewController {
         let usernameLabel = UILabel()
         usernameLabel.text = "Екатерина Новикова"
         usernameLabel.font = UIFont.boldSystemFont(ofSize: 23)
-        usernameLabel.textColor = UIColor(named: "YP White (iOS)")
+        usernameLabel.textColor = .ypWhite
         return usernameLabel
     }()
     private lazy var loginLabel: UILabel = {
         let loginLabel = UILabel()
         loginLabel.text = "@ekaterina_nov"
         loginLabel.font = UIFont.systemFont(ofSize: 13)
-        loginLabel.textColor = UIColor(named: "YP Gray (iOS)")
+        loginLabel.textColor = .ypGray
         return loginLabel
     }()
     private lazy var statusLabel: UILabel = {
         let statusLabel = UILabel()
         statusLabel.text = "Hello, world!"
         statusLabel.font = UIFont.systemFont(ofSize: 13)
-        statusLabel.textColor = UIColor(named: "YP White (iOS)")
+        statusLabel.textColor = .ypWhite
         return statusLabel
     }()
     private lazy var logoutButton: UIButton = {
         let logoutButton = UIButton.systemButton(
-            with: UIImage(named: "exitButtonImage")!,
+            with: UIImage(named: "ExitButtonImage")!,
             target: self,
             action: #selector(didTapButton))
-        logoutButton.tintColor = UIColor(named: "YP Red (iOS)")
+        logoutButton.tintColor = .ypRed
         return logoutButton
     }()
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,7 +55,7 @@ final class ProfileViewController: UIViewController {
         addLoginLabel()
         addStatusLabel()
         addLogoutButton()
-        view.backgroundColor = UIColor(named: "YP Black (iOS)")
+        view.backgroundColor = .ypBlack
         
         if let profile = profileService.profile {
             updateProfileDetails(profile: profile)
@@ -123,12 +127,12 @@ final class ProfileViewController: UIViewController {
             return
         }
         let processor = RoundCornerImageProcessor(cornerRadius: userImage.frame.size.height / 2)
-        userImage.kf.setImage(with: url, placeholder: UIImage(named: "userImagePlaceholder"), options: [.processor(processor)])
+        userImage.kf.setImage(with: url, placeholder: UIImage(named: "UserImagePlaceholder"), options: [.processor(processor)])
     }
     
     @objc
     func didTapButton() {
-//        OAuth2TokenStorage().token = nil
+
     }
     
 }

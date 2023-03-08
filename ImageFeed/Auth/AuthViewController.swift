@@ -13,7 +13,10 @@ final class AuthViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.performSegue(withIdentifier: showWebViewSegueIdentifier, sender: self)
-        print("Here")
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
