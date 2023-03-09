@@ -1,9 +1,15 @@
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
+    private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
+    private let oauth2Service = OAuth2Service.shared
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
     private lazy var userImage: UIImageView = {
-        let placeholder = UIImage(named: "userImagePlaceholder")
+        let placeholder = UIImage(named: "UserImagePlaceholder")
         let userImage = UIImageView(image: placeholder)
         return userImage
     }()
@@ -11,45 +17,66 @@ final class ProfileViewController: UIViewController {
         let usernameLabel = UILabel()
         usernameLabel.text = "Екатерина Новикова"
         usernameLabel.font = UIFont.boldSystemFont(ofSize: 23)
-        usernameLabel.textColor = UIColor(named: "YP White (iOS)")
+        usernameLabel.textColor = .ypWhite
         return usernameLabel
     }()
     private lazy var loginLabel: UILabel = {
         let loginLabel = UILabel()
         loginLabel.text = "@ekaterina_nov"
         loginLabel.font = UIFont.systemFont(ofSize: 13)
-        loginLabel.textColor = UIColor(named: "YP Gray (iOS)")
+        loginLabel.textColor = .ypGray
         return loginLabel
     }()
     private lazy var statusLabel: UILabel = {
         let statusLabel = UILabel()
         statusLabel.text = "Hello, world!"
         statusLabel.font = UIFont.systemFont(ofSize: 13)
-        statusLabel.textColor = UIColor(named: "YP White (iOS)")
+        statusLabel.textColor = .ypWhite
         return statusLabel
     }()
     private lazy var logoutButton: UIButton = {
         let logoutButton = UIButton.systemButton(
-            with: UIImage(named: "exitButtonImage")!,
+            with: UIImage(named: "ExitButtonImage")!,
             target: self,
             action: #selector(didTapButton))
-        logoutButton.tintColor = UIColor(named: "YP Red (iOS)")
+        logoutButton.tintColor = .ypRed
         return logoutButton
     }()
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         addUserImage()
         addUsernameLabel()
         addLoginLabel()
         addStatusLabel()
         addLogoutButton()
+        view.backgroundColor = .ypBlack
         
+        if let profile = profileService.profile {
+            updateProfileDetails(profile: profile)
+        }
+        
+        profileImageServiceObserver = NotificationCenter.default.addObserver(
+            forName: ProfileImageService.didChangeNotification,
+            object: nil,
+            queue: .main,
+            using: { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
+        )
+        updateAvatar()
     }
     
-    func addUserImage() {
+    private func addUserImage() {
         view.addSubview(userImage)
         userImage.translatesAutoresizingMaskIntoConstraints = false
+        userImage.layer.cornerRadius = userImage.frame.size.width / 2
         NSLayoutConstraint.activate([
             userImage.heightAnchor.constraint(equalToConstant: 70),
             userImage.widthAnchor.constraint(equalToConstant: 70),
@@ -58,37 +85,54 @@ final class ProfileViewController: UIViewController {
         ])
     }
     
-    func addUsernameLabel() {
+    private func addUsernameLabel() {
         view.addSubview(usernameLabel)
         usernameLabel.translatesAutoresizingMaskIntoConstraints = false
         usernameLabel.topAnchor.constraint(equalTo: userImage.bottomAnchor, constant: 8).isActive = true
         usernameLabel.leadingAnchor.constraint(equalTo: userImage.leadingAnchor).isActive = true
     }
     
-    func addLoginLabel() {
+    private func addLoginLabel() {
         view.addSubview(loginLabel)
         loginLabel.translatesAutoresizingMaskIntoConstraints = false
         loginLabel.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 8).isActive = true
         loginLabel.leadingAnchor.constraint(equalTo: usernameLabel.leadingAnchor).isActive = true
     }
     
-    func addStatusLabel() {
+    private func addStatusLabel() {
         view.addSubview(statusLabel)
         statusLabel.translatesAutoresizingMaskIntoConstraints = false
         statusLabel.topAnchor.constraint(equalTo: loginLabel.bottomAnchor, constant: 8).isActive = true
         statusLabel.leadingAnchor.constraint(equalTo: loginLabel.leadingAnchor).isActive = true
     }
     
-    func addLogoutButton() {
+    private func addLogoutButton() {
         view.addSubview(logoutButton)
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
         logoutButton.centerYAnchor.constraint(equalTo: userImage.centerYAnchor).isActive = true
         logoutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -26).isActive = true
     }
     
+    private func updateProfileDetails(profile: Profile) {
+        self.usernameLabel.text = profile.name
+        self.loginLabel.text = profile.loginName
+        self.statusLabel.text = profile.bio
+    }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = profileImageService.avatarURL,
+            let url = URL(string: profileImageURL)
+        else {
+            return
+        }
+        let processor = RoundCornerImageProcessor(cornerRadius: userImage.frame.size.height / 2)
+        userImage.kf.setImage(with: url, placeholder: UIImage(named: "UserImagePlaceholder"), options: [.processor(processor)])
+    }
+    
     @objc
     func didTapButton() {
-        
+        OAuth2TokenStorage.shared.token = nil
     }
     
 }

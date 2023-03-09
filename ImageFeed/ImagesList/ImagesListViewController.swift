@@ -32,6 +32,10 @@ final class ImagesListViewController: UIViewController {
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
+    }
+    
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
                 
         guard let image = UIImage(named: photosName[indexPath.row]) else {
@@ -46,6 +50,7 @@ final class ImagesListViewController: UIViewController {
         }
         let likeButtonStatus = indexPath.row%2 == 1 ? "Active" : "Inactive"
         cell.likeButton.setImage(UIImage(named: likeButtonStatus), for: .normal)
+        cell.selectionStyle = .none
     }
 }
 
