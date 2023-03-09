@@ -14,6 +14,8 @@ struct ProfileImage: Codable {
 
 final class ProfileImageService {
     static let shared = ProfileImageService()
+    private init() {}
+    
     static let didChangeNotification = Notification.Name(rawValue: "ProfileImageDidChange")
     private let urlSession = URLSession.shared
     private var task: URLSessionTask?
@@ -24,7 +26,7 @@ final class ProfileImageService {
         assert(Thread.isMainThread)
         task?.cancel()
         
-        guard let token = OAuth2TokenStorage().token else { return }
+        guard let token = OAuth2TokenStorage.shared.token else { return }
         let request = makeRequest(username: username, token: token)
         
         let task = urlSession.objectTask(for: request) { [weak self] (result: Result<UserResult, Error>) in

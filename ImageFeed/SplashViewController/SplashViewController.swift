@@ -2,7 +2,6 @@ import UIKit
 import ProgressHUD
 
 final class SplashViewController: UIViewController {
-    private let oauth2TokenStorage = OAuth2TokenStorage()
     private var firstLaunch: Bool = true
     private let oauth2Service = OAuth2Service.shared
     private let profileService = ProfileService.shared
@@ -26,7 +25,7 @@ final class SplashViewController: UIViewController {
         if firstLaunch {
             firstLaunch = false
                         
-            if let token = OAuth2TokenStorage().token {
+            if let token = OAuth2TokenStorage.shared.token {
                 fetchProfile(token: token)
             } else {
                 switchToAuthViewController()
@@ -119,7 +118,7 @@ extension SplashViewController: AuthViewControllerDelegate {
     }
     
     private func fetchProfileImageURL(username: String) {
-        profileImageService.fetchProfileImageURL(username: username) { result in
+        profileImageService.fetchProfileImageURL(username: username) {  [weak self] result in
             switch result {
             case .success(let avatarURL):
                 NotificationCenter.default.post(
@@ -128,6 +127,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                     userInfo: ["URL": avatarURL]
                 )
             case .failure:
+                guard let self = self else { return }
                 self.presentNetworkErrorAlert()
             }
         }
@@ -140,7 +140,7 @@ extension SplashViewController: AuthViewControllerDelegate {
             preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Ок", style: .default) { _ in
-            
+            self.switchToAuthViewController()
         }
         
         alert.addAction(action)

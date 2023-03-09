@@ -132,7 +132,7 @@ final class ProfileViewController: UIViewController {
     
     @objc
     func didTapButton() {
-
+        OAuth2TokenStorage.shared.token = nil
     }
     
 }
