@@ -300,7 +300,7 @@
         <!--Navigation Controller-->
         <scene sceneID="vIh-Ec-Up1">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jV7-wF-mci" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NavigationController" automaticallyAdjustsScrollViewInsets="NO" id="jV7-wF-mci" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="MFx-gh-Ocf"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="nv6-5n-V4a">
