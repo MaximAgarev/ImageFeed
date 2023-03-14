@@ -1,5 +1,9 @@
 import Foundation
 
+struct LikeResult: Codable {
+    let photo: PhotoResult
+}
+
 struct PhotoResult: Codable {
     let id: String
     let width: Int
@@ -25,7 +29,7 @@ struct UrlsResult: Codable {
     let full: String
 }
 
-struct Photo {
+struct Photo: Equatable {
     let id: String
     let size: CGSize
     let createdAt: Date?
@@ -33,6 +37,10 @@ struct Photo {
     let thumbImageURL: String
     let largeImageURL: String
     let isLiked: Bool
+    
+    static func == (lhs: Photo, rhs: Photo) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
 
 final class ImagesListService {
@@ -40,7 +48,8 @@ final class ImagesListService {
     static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     
     private let urlSession = URLSession.shared
-    private var task: URLSessionTask?
+    private var photosTask: URLSessionTask?
+    private var likeTask: URLSessionTask?
 
     private (set) var photos: [Photo] = []
     private var lastLoadedPage: Int?
@@ -55,7 +64,7 @@ final class ImagesListService {
         self.lastLoadedPage = nextPage
 
         assert(Thread.isMainThread)
-        task?.cancel()
+        photosTask?.cancel()
 
         guard let token = OAuth2TokenStorage.shared.token else { return }
         let request = makeRequest(page: nextPage, token: token)
@@ -66,19 +75,23 @@ final class ImagesListService {
                 switch result {
                 case .success(let photoResults):
                     photoResults.forEach { photoResult in
-                        self.photos.append(self.getPhoto(photoResult))
+                        let photo = self.getPhoto(photoResult)
+                        if !self.photos.contains(photo) {
+                            self.photos.append(photo)
+                        }
                     }
                     NotificationCenter.default.post(
                         name: ImagesListService.didChangeNotification,
                         object: self,
                         userInfo: ["photos": self.photos]
                     )
+                    self.photosTask = nil
                 case .failure(let error):
                     assertionFailure("\(error)")
                 }
             }
         }
-        self.task = task
+        self.photosTask = task
         task.resume()
         
     }
@@ -95,6 +108,50 @@ final class ImagesListService {
         )
         return photo
     }
+    
+    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void) {
+        assert(Thread.isMainThread)
+        likeTask?.cancel()
+        
+        guard let token = OAuth2TokenStorage.shared.token else { return }
+        let request = makeLikeRequest(photoId: photoId, isLike: isLike, token: token)
+        
+        let task = urlSession.objectTask(for: request) { [weak self] (result: Result<LikeResult, Error>) -> Void in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success(_):
+                    self.switchLike(result: result, photoId: photoId, completion: completion)
+                    completion(.success(()))
+                    self.likeTask = nil
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            }
+        }
+        self.likeTask = task
+        task.resume()
+    }
+    
+    func switchLike(result: Result<LikeResult, Error>, photoId: String, completion: @escaping (Result<Void, Error>) -> Void){
+        switch result {
+        case .success:
+            if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
+                let photo = self.photos[index]
+                let newPhoto = Photo(
+                    id: photo.id,
+                    size: photo.size,
+                    createdAt: photo.createdAt,
+                    welcomeDescription: photo.welcomeDescription,
+                    thumbImageURL: photo.thumbImageURL,
+                    largeImageURL: photo.largeImageURL,
+                    isLiked: !photo.isLiked
+                )
+                self.photos = self.photos.withReplaced(itemAt: index, newValue: newPhoto)}
+        case .failure:
+            break
+        }
+    }
 }
 
 extension ImagesListService {
@@ -103,6 +160,15 @@ extension ImagesListService {
             path: "/photos"
             + "?page=\(page)",
             httpMethod: "GET",
+            baseURL: defaultBaseURL)
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        return request
+    }
+    
+    private func makeLikeRequest(photoId: String, isLike: Bool, token: String) -> URLRequest {
+        var request = URLRequest.makeHTTPRequest(
+            path: "/photos/\(photoId)/like",
+            httpMethod: isLike ? "POST" : "DELETE",
             baseURL: defaultBaseURL)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request

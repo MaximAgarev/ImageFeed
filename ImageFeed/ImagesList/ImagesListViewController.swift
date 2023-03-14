@@ -47,6 +47,7 @@ final class ImagesListViewController: UIViewController {
         if photos.isEmpty {
             imagesListService.fetchPhotosNextPage()
         }
+        
     }
     
     private func updateTableViewAnimated() {
@@ -93,6 +94,8 @@ extension ImagesListViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
         guard let imagesListCell = cell as? ImagesListCell else { return UITableViewCell() }
         
+        imagesListCell.delegate = self
+        
         configCell(for: imagesListCell, with: indexPath)
         return imagesListCell
     }
@@ -107,7 +110,7 @@ extension ImagesListViewController: UITableViewDataSource {
             self.tableView.reloadRows(at: [indexPath], with: .automatic)
         }
         
-        cell.dateLabel.text = "#\(indexPath.row)" //dateFormatter.string(from: photo.createdAt ?? Date())
+        cell.dateLabel.text = dateFormatter.string(from: photo.createdAt ?? Date())
 
         let likeButtonStatus = photo.isLiked ? "Active" : "Inactive"
         cell.likeButton.setImage(UIImage(named: likeButtonStatus), for: .normal)
@@ -121,5 +124,25 @@ extension ImagesListViewController {
         if indexPath.row == photos.count-1 {
             imagesListService.fetchPhotosNextPage()
         }
+    }
+}
+
+extension ImagesListViewController: ImagesListCellDelegate {
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+        UIBlockingProgressHUD.show()
+        imagesListService.changeLike(photoId: photo.id, isLike: photo.isLiked) { [weak self] result in
+            guard let self = self else { return }
+            UIBlockingProgressHUD.dismiss()
+            switch result {
+            case .success():
+                self.photos = self.imagesListService.photos
+                cell.setIsLiked(photo.isLiked)
+            case.failure(let error):
+                assertionFailure("\(error)")
+            }
+        }
+        
     }
 }

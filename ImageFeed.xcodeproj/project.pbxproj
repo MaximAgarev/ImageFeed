@@ -31,6 +31,7 @@
 		D032EC7129B3AB2E00847BC7 /* ProfileImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D032EC7029B3AB2E00847BC7 /* ProfileImageService.swift */; };
 		D032EC7329B4EA2F00847BC7 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D032EC7229B4EA2F00847BC7 /* URL+Extensions.swift */; };
 		D03407EF29683915005E6ABE /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03407EE29683915005E6ABE /* ImagesListCell.swift */; };
+		D034628429C06C5100616156 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D034628329C06C5100616156 /* Array+Extensions.swift */; };
 		D072746529A7B5C20088C3C0 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = D072746429A7B5C20088C3C0 /* ProgressHUD */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +60,7 @@
 		D032EC7029B3AB2E00847BC7 /* ProfileImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageService.swift; sourceTree = "<group>"; };
 		D032EC7229B4EA2F00847BC7 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		D03407EE29683915005E6ABE /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
+		D034628329C06C5100616156 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,8 +98,10 @@
 		D00CCF3A29B8C622001529A0 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				D032EC6C29B35F3600847BC7 /* UIBlockingProgressHUD.swift */,
 				D032EC7229B4EA2F00847BC7 /* URL+Extensions.swift */,
 				D00CCF3B29B8C63A001529A0 /* UIColor+Extensions.swift.swift */,
+				D034628329C06C5100616156 /* Array+Extensions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -154,7 +158,6 @@
 			children = (
 				D024A52C299F929B001FDFDB /* AuthViewController.swift */,
 				D024A52E299FA8C7001FDFDB /* WebViewViewController.swift */,
-				D032EC6C29B35F3600847BC7 /* UIBlockingProgressHUD.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -285,6 +288,7 @@
 				D024A53429A207EB001FDFDB /* OAuth2TokenStorage.swift in Sources */,
 				D032EC6D29B35F3600847BC7 /* UIBlockingProgressHUD.swift in Sources */,
 				D024A52D299F929B001FDFDB /* AuthViewController.swift in Sources */,
+				D034628429C06C5100616156 /* Array+Extensions.swift in Sources */,
 				D024A52A299F90FF001FDFDB /* Constants.swift in Sources */,
 				D0082D2B297D4A5C005A5B7A /* SingleImageViewController.swift in Sources */,
 				D024A52F299FA8C7001FDFDB /* WebViewViewController.swift in Sources */,
