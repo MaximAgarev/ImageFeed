@@ -132,7 +132,25 @@ final class ProfileViewController: UIViewController {
     
     @objc
     func didTapButton() {
-        OAuth2TokenStorage.shared.token = nil
+        let alert = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены, что хотите выйти?",
+            preferredStyle: .alert)
+        
+        let yesAction = UIAlertAction(title: "Да", style: .default) { _ in
+            OAuth2Service.clean()
+            guard let window = UIApplication.shared.windows.first else {
+                assertionFailure("Invalid configuration")
+                return
+            }
+            window.rootViewController = SplashViewController()
+            window.makeKeyAndVisible()
+        }
+        
+        let noAction = UIAlertAction(title: "Нет", style: .default)
+        
+        alert.addAction(yesAction)
+        alert.addAction(noAction)
+        self.present(alert, animated: true)
     }
-    
 }

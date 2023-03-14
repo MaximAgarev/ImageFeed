@@ -1,4 +1,5 @@
 import UIKit
+import  WebKit
 
 struct OAuthTokenResponseBody: Codable {
     let accessToken: String
@@ -74,5 +75,17 @@ extension OAuth2Service {
             httpMethod: "POST",
             baseURL: URL(string: "https://unsplash.com")!
         )
+    }
+}
+
+extension OAuth2Service {
+    static func clean() {
+        OAuth2Service.shared.authToken = nil
+        HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+        WKWebsiteDataStore.default().fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            records.forEach { record in
+                WKWebsiteDataStore.default().removeData(ofTypes: record.dataTypes, for: [record], completionHandler: {})
+            }
+        }
     }
 }

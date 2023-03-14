@@ -100,7 +100,7 @@ final class ImagesListService {
         let photo = Photo(
             id: photoResult.id,
             size: CGSize(width: photoResult.width, height: photoResult.height),
-            createdAt: ISO8601DateFormatter().date(from: photoResult.createdAt ?? "0"),
+            createdAt: ISO8601DateFormatter().date(from: photoResult.createdAt ?? ""),
             welcomeDescription: photoResult.description,
             thumbImageURL: photoResult.urls.thumb,
             largeImageURL: photoResult.urls.full,
@@ -168,7 +168,7 @@ extension ImagesListService {
     private func makeLikeRequest(photoId: String, isLike: Bool, token: String) -> URLRequest {
         var request = URLRequest.makeHTTPRequest(
             path: "/photos/\(photoId)/like",
-            httpMethod: isLike ? "POST" : "DELETE",
+            httpMethod: isLike ? "DELETE" : "POST",
             baseURL: defaultBaseURL)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
