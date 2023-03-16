@@ -33,6 +33,7 @@
 		D03407EF29683915005E6ABE /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D03407EE29683915005E6ABE /* ImagesListCell.swift */; };
 		D034628429C06C5100616156 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D034628329C06C5100616156 /* Array+Extensions.swift */; };
 		D072746529A7B5C20088C3C0 /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = D072746429A7B5C20088C3C0 /* ProgressHUD */; };
+		D075770029C31A35003D973C /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07576FF29C31A35003D973C /* Models.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +62,7 @@
 		D032EC7229B4EA2F00847BC7 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		D03407EE29683915005E6ABE /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
 		D034628329C06C5100616156 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
+		D07576FF29C31A35003D973C /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				D00CCF3E29BB7BD8001529A0 /* ImagesListService.swift */,
+				D07576FF29C31A35003D973C /* Models.swift */,
 			);
 			path = ImagesListService;
 			sourceTree = "<group>";
@@ -283,6 +286,7 @@
 				D0082D28297C105E005A5B7A /* ProfileViewController.swift in Sources */,
 				D00CCF3C29B8C63A001529A0 /* UIColor+Extensions.swift.swift in Sources */,
 				D024A53629A21DB4001FDFDB /* SplashViewController.swift in Sources */,
+				D075770029C31A35003D973C /* Models.swift in Sources */,
 				D0193DDC2958A5C1004F4850 /* AppDelegate.swift in Sources */,
 				D00CCF3029B65FE2001529A0 /* TabBarController.swift in Sources */,
 				D024A53429A207EB001FDFDB /* OAuth2TokenStorage.swift in Sources */,

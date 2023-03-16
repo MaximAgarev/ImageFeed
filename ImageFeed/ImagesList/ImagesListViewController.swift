@@ -5,7 +5,6 @@ final class ImagesListViewController: UIViewController {
     private var imagesListServiceObserver: NSObjectProtocol?
     private let imagesListService = ImagesListService.shared
 
-    private let photosName: [String] = Array(0..<20).map{"\($0)"}
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
     
     private var photos: [Photo] = []
@@ -22,8 +21,8 @@ final class ImagesListViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == showSingleImageSegueIdentifier {
-            let viewController = segue.destination as! SingleImageViewController
-            guard let indexPath = sender as? IndexPath else { return }
+            guard let viewController = segue.destination as? SingleImageViewController,
+                  let indexPath = sender as? IndexPath else { return }
             viewController.largeImageURL = photos[indexPath.row].largeImageURL
         } else {
             super.prepare(for: segue, sender: sender)
@@ -113,7 +112,7 @@ extension ImagesListViewController: UITableViewDataSource {
         if let photoDate = photo.createdAt {
             cell.dateLabel.text = dateFormatter.string(from: photoDate)
         } else {
-            cell.dateLabel.text = "Date is empty"
+            cell.dateLabel.text = ""
         }
 
         let likeButtonStatus = photo.isLiked ? "Active" : "Inactive"
@@ -143,8 +142,19 @@ extension ImagesListViewController: ImagesListCellDelegate {
             case .success():
                 self.photos = self.imagesListService.photos
                 cell.setIsLiked(photo.isLiked)
-            case.failure(let error):
-                assertionFailure("\(error)")
+                
+            case.failure(_):
+                let alert = UIAlertController(
+                    title: "Что-то пошло не так(",
+                    message: "Не удалось переключить лайк",
+                    preferredStyle: .alert)
+                
+                let action = UIAlertAction(title: "Ок", style: .default) { _ in
+                    return
+                }
+                
+                alert.addAction(action)
+                self.present(alert, animated: true)
             }
         }
         
