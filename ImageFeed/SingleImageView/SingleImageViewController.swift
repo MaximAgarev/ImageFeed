@@ -1,4 +1,5 @@
 import UIKit
+import ProgressHUD
 
 final class SingleImageViewController: UIViewController {
     var image: UIImage! {
@@ -8,6 +9,8 @@ final class SingleImageViewController: UIViewController {
             rescaleAndCenterImageInScrollView(image: image)
         }
     }
+    
+    var largeImageURL: String?
     
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var backButton: UIButton!
@@ -35,8 +38,23 @@ final class SingleImageViewController: UIViewController {
         super.viewDidLoad()
         scrollView.minimumZoomScale = 0.1
         scrollView.maximumZoomScale = 1.25
+        
         imageView.image = image
-        rescaleAndCenterImageInScrollView(image: image)
+        
+        if let largeImageURL = largeImageURL {
+            ProgressHUD.show()
+            imageView.kf.setImage(with: URL(string: largeImageURL)) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let imageResult):
+                    ProgressHUD.dismiss()
+                    self.rescaleAndCenterImageInScrollView(image: imageResult.image)
+                case .failure:
+                    ProgressHUD.dismiss()
+                    self.dismiss(animated: true)
+                }
+            }
+        }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -47,9 +65,10 @@ final class SingleImageViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    @IBAction private func didTapShareButton(_ sender: Any) {
-        guard let image = image else { return }
-        let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: nil)
+    @objc private func didTapShareButton(_ sender: Any) {
+        guard let image = imageView.image else { return }
+        
+        let activityViewController = UIActivityViewController(activityItems: [image], applicationActivities: [])
         present(activityViewController, animated: true)
     }
 }

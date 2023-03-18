@@ -15,6 +15,7 @@ final class SplashViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         view.backgroundColor = .ypBlack
         addLogoImage()
     }
@@ -60,7 +61,7 @@ final class SplashViewController: UIViewController {
         window.rootViewController = tabBarController
     }
     
-    private func switchToAuthViewController() {
+    func switchToAuthViewController() {
         guard let authViewController = getViewController(with: "AuthViewController") as? AuthViewController
         else {
             assertionFailure("Invalid configuration")
