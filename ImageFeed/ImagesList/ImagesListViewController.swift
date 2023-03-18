@@ -144,19 +144,23 @@ extension ImagesListViewController: ImagesListCellDelegate {
                 cell.setIsLiked(photo.isLiked)
                 
             case.failure(_):
-                let alert = UIAlertController(
-                    title: "Что-то пошло не так(",
-                    message: "Не удалось переключить лайк",
-                    preferredStyle: .alert)
-                
-                let action = UIAlertAction(title: "Ок", style: .default) { _ in
-                    return
-                }
-                
-                alert.addAction(action)
-                self.present(alert, animated: true)
+                self.showLikeAlert()
             }
         }
         
+    }
+    
+    private func showLikeAlert() {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так(",
+            message: "Не удалось переключить лайк",
+            preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Ок", style: .default) { _ in
+            return
+        }
+        
+        alert.addAction(action)
+        present(alert, animated: true)
     }
 }

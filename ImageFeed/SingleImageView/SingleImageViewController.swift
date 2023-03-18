@@ -43,7 +43,8 @@ final class SingleImageViewController: UIViewController {
         
         if let largeImageURL = largeImageURL {
             ProgressHUD.show()
-            imageView.kf.setImage(with: URL(string: largeImageURL)) { result in
+            imageView.kf.setImage(with: URL(string: largeImageURL)) { [weak self] result in
+                guard let self = self else { return }
                 switch result {
                 case .success(let imageResult):
                     ProgressHUD.dismiss()

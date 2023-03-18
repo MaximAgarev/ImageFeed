@@ -131,7 +131,7 @@ final class ProfileViewController: UIViewController {
     }
     
     @objc
-    func didTapButton() {
+    private func didTapButton() {
         let alert = UIAlertController(
             title: "Пока, пока!",
             message: "Уверены, что хотите выйти?",
