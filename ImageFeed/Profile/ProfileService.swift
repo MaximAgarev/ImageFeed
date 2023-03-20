@@ -67,7 +67,7 @@ extension ProfileService {
         var request = URLRequest.makeHTTPRequest(
             path: "/me",
             httpMethod: "GET",
-            baseURL: defaultBaseURL)
+            baseURL: DefaultBaseURL)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }

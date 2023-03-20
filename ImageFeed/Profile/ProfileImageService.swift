@@ -54,7 +54,7 @@ extension ProfileImageService {
             path: "/users"
             + "/\(username)",
             httpMethod: "GET",
-            baseURL: defaultBaseURL)
+            baseURL: DefaultBaseURL)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
