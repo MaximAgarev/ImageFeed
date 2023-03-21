@@ -39,6 +39,9 @@
 		D075770E29C71B3A003D973C /* WebViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D075770D29C71B3A003D973C /* WebViewTests.swift */; };
 		D075771B29C72997003D973C /* ImageFeedUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D075771A29C72997003D973C /* ImageFeedUITests.swift */; };
 		D075771D29C72997003D973C /* ImageFeedUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D075771C29C72997003D973C /* ImageFeedUITestsLaunchTests.swift */; };
+		D0A3762F29C98D7A00E12B8E /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A3762E29C98D7A00E12B8E /* ProfileView.swift */; };
+		D0A3763129C9910C00E12B8E /* ProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A3763029C9910C00E12B8E /* ProfilePresenter.swift */; };
+		D0A3763329CA59ED00E12B8E /* ProfileViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A3763229CA59ED00E12B8E /* ProfileViewTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,6 +95,9 @@
 		D075771829C72997003D973C /* ImageFeedUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageFeedUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D075771A29C72997003D973C /* ImageFeedUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFeedUITests.swift; sourceTree = "<group>"; };
 		D075771C29C72997003D973C /* ImageFeedUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFeedUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		D0A3762E29C98D7A00E12B8E /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		D0A3763029C9910C00E12B8E /* ProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePresenter.swift; sourceTree = "<group>"; };
+		D0A3763229CA59ED00E12B8E /* ProfileViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +134,8 @@
 				D0082D27297C105E005A5B7A /* ProfileViewController.swift */,
 				D032EC6E29B364FD00847BC7 /* ProfileService.swift */,
 				D032EC7029B3AB2E00847BC7 /* ProfileImageService.swift */,
+				D0A3762E29C98D7A00E12B8E /* ProfileView.swift */,
+				D0A3763029C9910C00E12B8E /* ProfilePresenter.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -252,6 +260,7 @@
 			isa = PBXGroup;
 			children = (
 				D075770D29C71B3A003D973C /* WebViewTests.swift */,
+				D0A3763229CA59ED00E12B8E /* ProfileViewTests.swift */,
 			);
 			path = ImageFeedTests;
 			sourceTree = "<group>";
@@ -422,9 +431,11 @@
 				D034628429C06C5100616156 /* Array+Extensions.swift in Sources */,
 				D024A52A299F90FF001FDFDB /* AuthConfiguration.swift in Sources */,
 				D0082D2B297D4A5C005A5B7A /* SingleImageViewController.swift in Sources */,
+				D0A3762F29C98D7A00E12B8E /* ProfileView.swift in Sources */,
 				D024A52F299FA8C7001FDFDB /* WebViewViewController.swift in Sources */,
 				D00CCF3F29BB7BD8001529A0 /* ImagesListService.swift in Sources */,
 				D075770629C6246E003D973C /* AuthHelper.swift in Sources */,
+				D0A3763129C9910C00E12B8E /* ProfilePresenter.swift in Sources */,
 				D024A532299FC4F0001FDFDB /* OAuth2Service.swift in Sources */,
 				D032EC7129B3AB2E00847BC7 /* ProfileImageService.swift in Sources */,
 				D0193DDE2958A5C1004F4850 /* SceneDelegate.swift in Sources */,
@@ -436,6 +447,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0A3763329CA59ED00E12B8E /* ProfileViewTests.swift in Sources */,
 				D075770E29C71B3A003D973C /* WebViewTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
