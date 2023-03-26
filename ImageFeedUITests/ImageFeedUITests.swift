@@ -10,43 +10,47 @@ class ImageFeedUITests: XCTestCase {
         app.launch()
     }
     
+    override func tearDown() {
+        app.tabBars.buttons.element(boundBy: 1).tap()
+
+        let logoutButton = app.buttons["LogoutButton"]
+        logoutButton.tap()
+
+        app.alerts["Пока, пока!"].scrollViews.otherElements.buttons["Да"].tap()
+    }
+    
     func testAuth() throws {
+        if !app.buttons["Authenticate"].exists {
+            tearDown()
+            sleep(3)
+        }
         app.buttons["Authenticate"].tap()
         
         let webView = app.webViews["UnsplashWebView"]
         XCTAssertTrue(webView.waitForExistence(timeout: 5))
         
-        let passwordTestField = webView.descendants(matching: .secureTextField).element
-        passwordTestField.tap()
-        passwordTestField.typeText("***")
-        
-        let loginTestField = webView.descendants(matching: .textField).element
-        loginTestField.tap()
-        loginTestField.typeText("***")
-        
-        let loginButton = webView.descendants(matching: .button).element
-        loginButton.tap()
-        
+        fulfillCredentials(testAuth: true)
+
         let tablesQuery = app.tables
         let cell = tablesQuery.children(matching: .cell).element(boundBy: 0)
+        sleep(3)
+
         XCTAssertTrue(cell.waitForExistence(timeout: 5))
     }
     
     func testFeed() throws {
-        let tablesQuery = app.tables
-//        var cell = tablesQuery.children(matching: .cell).element(boundBy: 0)
-//        sleep(3)
-//        cell.swipeUp()
         sleep(3)
-//
-//        tablesQuery.element.swipeUp()
-//        sleep(3)
-//        tablesQuery.element.swipeDown()
+        if app.buttons["Authenticate"].exists {
+            fulfillCredentials(testAuth: false)
+        }
+        
+        let tablesQuery = app.tables
+        sleep(3)
         
         let cell = tablesQuery.children(matching: .cell).element(boundBy: 0)
-        cell.buttons["Inactive"].tap()
+        cell.buttons.firstMatch.tap()
         sleep(3)
-        cell.buttons["Active"].tap()
+        cell.buttons.firstMatch.tap()
         sleep(3)
 
         cell.tap()
@@ -61,13 +65,41 @@ class ImageFeedUITests: XCTestCase {
     }
     
     func testProfile() throws {
+        if app.buttons["Authenticate"].exists {
+            fulfillCredentials(testAuth: false)
+        }
         sleep(3)
         app.tabBars.buttons.element(boundBy: 1).tap()
         XCTAssertTrue(app.staticTexts["Maxim Agarev"].exists)
-        
-        let logoutButton = app.buttons["LogoutButton"]
-        logoutButton.tap()
-        
-        app.alerts["Пока, пока!"].scrollViews.otherElements.buttons["Да"].tap()
     }
+    
+    private func fulfillCredentials(testAuth: Bool) {
+        if !testAuth {
+            app.buttons["Authenticate"].tap()
+        }
+        let webView = app.webViews["UnsplashWebView"]
+        
+        let passwordTestField = webView.descendants(matching: .secureTextField).element
+        passwordTestField.tap()
+        sleep(3)
+        let password = "***"
+        passwordTestField.typeText(password)
+
+        let loginTestField = webView.descendants(matching: .textField).element
+        loginTestField.tap()
+        sleep(3)
+        let login = "***"
+        loginTestField.typeText(login)
+
+        let loginButton = webView.descendants(matching: .button).element
+        loginButton.tap()
+        
+        sleep(3)
+        //Ищем статик "ImageFeed", с которого начинается запрос на авторизацию
+        if webView.descendants(matching: .staticText).element(matching: .staticText, identifier: "ImageFeed").exists {
+            webView.descendants(matching: .button).element.firstMatch.tap()
+        }
+    }
+    
+
 }

@@ -2,8 +2,8 @@ import Foundation
 
 struct ProfileResult: Codable {
     let username: String
-    let firstName: String
-    let lastName: String
+    let firstName: String?
+    let lastName: String?
     let bio: String?
     
     enum CodingKeys: String, CodingKey {
@@ -48,7 +48,7 @@ final class ProfileService {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let body):
-                    let profile = Profile(username: body.username, firstName: body.firstName, lastName: body.lastName, bio: body.bio ?? "")
+                    let profile = Profile(username: body.username, firstName: body.firstName ?? "", lastName: body.lastName ?? "", bio: body.bio ?? "")
                         self.profile = profile
                         completion(.success(profile))
                     self.task = nil
