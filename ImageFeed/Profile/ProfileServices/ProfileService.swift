@@ -1,33 +1,5 @@
 import Foundation
 
-struct ProfileResult: Codable {
-    let username: String
-    let firstName: String
-    let lastName: String
-    let bio: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case username
-        case firstName = "first_name"
-        case lastName = "last_name"
-        case bio
-    }
-}
-
-struct Profile {
-    let username: String
-    let firstName: String
-    let lastName: String
-    let bio: String
-    
-    var name: String {
-        return "\(firstName) \(lastName)"
-    }
-    var loginName: String {
-        return "@\(username)"
-    }
-}
-
 final class ProfileService {
     static let shared = ProfileService()
     private init() {}
@@ -48,7 +20,7 @@ final class ProfileService {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let body):
-                    let profile = Profile(username: body.username, firstName: body.firstName, lastName: body.lastName, bio: body.bio ?? "")
+                    let profile = Profile(username: body.username, firstName: body.firstName ?? "", lastName: body.lastName ?? "", bio: body.bio ?? "")
                         self.profile = profile
                         completion(.success(profile))
                     self.task = nil
@@ -67,7 +39,7 @@ extension ProfileService {
         var request = URLRequest.makeHTTPRequest(
             path: "/me",
             httpMethod: "GET",
-            baseURL: defaultBaseURL)
+            baseURL: DefaultBaseURL)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }

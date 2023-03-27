@@ -1,17 +1,5 @@
 import Foundation
 
-struct UserResult: Codable {
-    let profileImage: ProfileImage
-    
-    enum CodingKeys: String, CodingKey {
-        case profileImage = "profile_image"
-    }
-}
-
-struct ProfileImage: Codable {
-    let small: String
-}
-
 final class ProfileImageService {
     static let shared = ProfileImageService()
     private init() {}
@@ -34,7 +22,7 @@ final class ProfileImageService {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let body):
-                    let avatarURL = body.profileImage.small
+                    let avatarURL = body.profileImage.medium
                     self.avatarURL = avatarURL
                     completion(.success(avatarURL))
                     self.task = nil
@@ -54,7 +42,7 @@ extension ProfileImageService {
             path: "/users"
             + "/\(username)",
             httpMethod: "GET",
-            baseURL: defaultBaseURL)
+            baseURL: DefaultBaseURL)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
