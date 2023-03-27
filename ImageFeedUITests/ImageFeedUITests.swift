@@ -82,13 +82,13 @@ class ImageFeedUITests: XCTestCase {
         let passwordTestField = webView.descendants(matching: .secureTextField).element
         passwordTestField.tap()
         sleep(3)
-        let password = "***"
+        let password = "Mm12345678"
         passwordTestField.typeText(password)
 
         let loginTestField = webView.descendants(matching: .textField).element
         loginTestField.tap()
         sleep(3)
-        let login = "***"
+        let login = "maximagarev@yandex.ru"
         loginTestField.typeText(login)
 
         let loginButton = webView.descendants(matching: .button).element

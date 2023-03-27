@@ -52,8 +52,6 @@ final class ProfileView: UIView, ProfileViewProtocol {
     
     init(frame: CGRect, viewController: ProfileViewControllerProtocol) {
         super.init(frame: frame)
-//        self.viewController = viewController
-//        self.presenter = ProfilePresenter(view: self) as? any ProfilePresenterProtocol
         self.backgroundColor = .ypBlack
         self.addSubviews()
         
@@ -66,7 +64,7 @@ final class ProfileView: UIView, ProfileViewProtocol {
     private func addUserImage() {
         self.addSubview(userImage)
         userImage.translatesAutoresizingMaskIntoConstraints = false
-        userImage.layer.cornerRadius = userImage.frame.size.width / 2
+//        userImage.layer.cornerRadius = 35
         NSLayoutConstraint.activate([
             userImage.heightAnchor.constraint(equalToConstant: 70),
             userImage.widthAnchor.constraint(equalToConstant: 70),
@@ -118,7 +116,7 @@ final class ProfileView: UIView, ProfileViewProtocol {
     }
     
     func updateAvatar(url: URL) {
-        let processor = RoundCornerImageProcessor(cornerRadius: userImage.frame.size.height / 2)
+        let processor = RoundCornerImageProcessor(cornerRadius: 35)
         userImage.kf.setImage(with: url, placeholder: UIImage(named: "UserImagePlaceholder"), options: [.processor(processor)])
     }
     
